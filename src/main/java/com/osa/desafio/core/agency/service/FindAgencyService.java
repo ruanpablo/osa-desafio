@@ -32,7 +32,7 @@ public class FindAgencyService implements FindAgencyUseCase<FindNearestAgencyRes
                 page.isLast(),
                 page.getContent());
 
-        log.info("stage=end method=findNearestAgencies pageNumber={} pageSize={} totalPages={}", request.page(), request.size(), paginationResponse.getTotalPages());
+        log.info("stage=end method=findNearestAgencies pageNumber={} pageSize={} totalPages={}", request.page(), request.size(), paginationResponse.totalPages());
         return paginationResponse;
     }
 }

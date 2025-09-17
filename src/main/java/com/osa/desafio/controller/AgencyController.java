@@ -21,6 +21,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+
 @RequiredArgsConstructor
 @RestController
 @Tag(name = "Agências", description = "Operações relacionadas a Agências")
@@ -59,9 +61,9 @@ public class AgencyController {
     })
     ResponseEntity<PaginationResponse<FindNearestAgencyResponse>> findDistanceAgencyToUser(
             @Parameter(description = "Latitude do usuário", example = "-23")
-            @RequestParam(name = "posX") Long latitude,
+            @RequestParam(name = "posX") BigDecimal latitude,
             @Parameter(description = "Longitude do usuário", example = "-46")
-            @RequestParam(name = "posY") Long longitude,
+            @RequestParam(name = "posY") BigDecimal longitude,
             @Parameter(description = "Número da Página")
             @RequestParam(defaultValue = "0") int page,
             @Parameter(description = "Número de agências mais próximas")

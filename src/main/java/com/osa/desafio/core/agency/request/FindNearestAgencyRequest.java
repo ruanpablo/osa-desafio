@@ -1,8 +1,10 @@
 package com.osa.desafio.core.agency.request;
 
+import java.math.BigDecimal;
+
 public record FindNearestAgencyRequest(
-        Long latitude,
-        Long longitude,
+        BigDecimal latitude,
+        BigDecimal longitude,
         int page,
         int size
 ) {

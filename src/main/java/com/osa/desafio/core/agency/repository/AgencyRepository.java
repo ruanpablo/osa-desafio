@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Repository
@@ -19,5 +20,5 @@ public interface AgencyRepository extends JpaRepository<AgencyModel, UUID> {
         FROM tbl_agencies a
         ORDER BY distance ASC
         """, nativeQuery = true)
-    Page<FindNearestAgencyResponse> findNearestAgencies(Long latitude, Long longitude, PageRequest pageRequest);
+    Page<FindNearestAgencyResponse> findNearestAgencies(BigDecimal latitude, BigDecimal longitude, PageRequest pageRequest);
 }
