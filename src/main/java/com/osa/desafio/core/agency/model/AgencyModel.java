@@ -16,7 +16,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode
-@Entity(name = "tbl_agencies")
+@Entity
+@Table(name = "tbl_agencies", uniqueConstraints = {
+        @UniqueConstraint(name = "uk_lat_long", columnNames = {"latitude", "longitude"})
+})
 public class AgencyModel {
     @Id
     @GeneratedValue(generator = "UUID")

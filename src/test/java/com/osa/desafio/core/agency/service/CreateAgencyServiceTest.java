@@ -1,10 +1,12 @@
 package com.osa.desafio.core.agency.service;
 
+import com.osa.desafio.core.agency.enums.AgencyMessageErrorEnum;
 import com.osa.desafio.core.agency.mapper.AgencyMapper;
 import com.osa.desafio.core.agency.model.AgencyModel;
 import com.osa.desafio.core.agency.repository.AgencyRepository;
 import com.osa.desafio.core.agency.request.CreateAgencyRequest;
 import com.osa.desafio.core.agency.response.CreateAgencyResponse;
+import com.osa.desafio.exception.custom.ResourceAlreadyExistsException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,10 +17,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
+import static com.osa.desafio.core.agency.enums.AgencyMessageErrorEnum.DUPLICATE_LATITUDE_LONGITUDE;
 import static org.mockito.ArgumentMatchers.any;
 
 @SpringBootTest
@@ -40,7 +44,7 @@ class CreateAgencyServiceTest {
 
     @DisplayName("Deve criar agência com sucesso")
     @Test
-    void createAgencySuccess() {
+    void createAgencySuccess() throws ResourceAlreadyExistsException {
         //arrange
         CreateAgencyRequest agencyOne =
                 new CreateAgencyRequest("Agência Teste 1", new BigDecimal(10), new BigDecimal(8));
@@ -57,6 +61,26 @@ class CreateAgencyServiceTest {
         //assert
         Assertions.assertEquals(agencyOne.name(), agencyResponse.name());
         Assertions.assertEquals(agencyOne.latitude(), agencyResponse.latitude());
+        Mockito.verify(agencyRepository, Mockito.times(1)).save(any(AgencyModel.class));
+    }
+
+    @DisplayName("Deve retornar erro informando que a agência já existe ao tentar criar com a mesma latitude e longitude.")
+    @Test
+    void createAgencyDuplicateLatitudeLongitudeShouldThrowException() {
+        //arrange
+        CreateAgencyRequest agencyOne =
+                new CreateAgencyRequest("Agência Teste 1", new BigDecimal(10), new BigDecimal(8));
+
+        //when
+        Mockito.when(agencyRepository.save(any(AgencyModel.class)))
+                .thenThrow(new DataIntegrityViolationException(DUPLICATE_LATITUDE_LONGITUDE.getMensagem()));
+
+        //act
+        ResourceAlreadyExistsException exception = Assertions.assertThrows(ResourceAlreadyExistsException.class,
+                () -> createAgencyService.createAgency(agencyOne));
+
+        //assert
+        Assertions.assertEquals(DUPLICATE_LATITUDE_LONGITUDE.getMensagem(), exception.getMessage());
         Mockito.verify(agencyRepository, Mockito.times(1)).save(any(AgencyModel.class));
     }
 }

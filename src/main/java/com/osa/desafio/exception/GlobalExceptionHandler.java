@@ -1,5 +1,6 @@
 package com.osa.desafio.exception;
 
+import com.osa.desafio.exception.custom.ResourceAlreadyExistsException;
 import com.osa.desafio.exception.response.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +39,13 @@ public class GlobalExceptionHandler {
         ErrorResponse responseBody = new ErrorResponse(LocalDateTime.now(), HttpStatus.BAD_REQUEST.value(),
                 "Campos Inválidos", message, ex.getClass().getSimpleName(), servletRequest.getRequestURI());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+    }
+
+    @ExceptionHandler(ResourceAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponse> handleResourceAlreadyExistsRuntimeException(ResourceAlreadyExistsException ex) {
+        ErrorResponse responseBody = new ErrorResponse(LocalDateTime.now(), HttpStatus.CONFLICT.value(),
+                "Recurso já existe.", ex.getMessage(), ex.getClass().getSimpleName(), servletRequest.getRequestURI());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(responseBody);
     }
 
 }

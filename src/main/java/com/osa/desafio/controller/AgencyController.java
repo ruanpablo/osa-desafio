@@ -5,6 +5,7 @@ import com.osa.desafio.core.agency.response.FindNearestAgencyResponse;
 import com.osa.desafio.core.agency.request.CreateAgencyRequest;
 import com.osa.desafio.core.agency.response.CreateAgencyResponse;
 import com.osa.desafio.core.agency.response.PaginationResponse;
+import com.osa.desafio.exception.custom.ResourceAlreadyExistsException;
 import com.osa.desafio.usecase.agency.CreateAgencyUseCase;
 import com.osa.desafio.usecase.agency.FindAgencyUseCase;
 import io.swagger.v3.oas.annotations.Operation;
@@ -41,7 +42,7 @@ public class AgencyController {
             @ApiResponse(responseCode = "400", description = "Requisição inválida",
                     content = @Content)
     })
-    ResponseEntity<CreateAgencyResponse> createAgency(@RequestBody @Valid CreateAgencyRequest createAgencyRequest) {
+    ResponseEntity<CreateAgencyResponse> createAgency(@RequestBody @Valid CreateAgencyRequest createAgencyRequest) throws ResourceAlreadyExistsException {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(createAgencyUseCase.createAgency(createAgencyRequest));

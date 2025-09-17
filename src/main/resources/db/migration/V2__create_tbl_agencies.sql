@@ -1,1 +1,0 @@
-CREATE INDEX idx_lat_lon ON tbl_agencies(latitude, longitude);
