@@ -5,7 +5,7 @@
 
 Este projeto foi desenvolvido como parte de um **desafio técnico para o Banco Santander**, implementando APIs REST para **gerenciamento e consulta de agências**.
 
-A aplicação foi construída em **Java 11**, utilizando **Spring Boot**, **Spring Data JPA**, **MapStruct** e **H2 em memória** para testes.
+A aplicação foi construída em **Java 17**, utilizando **Spring Boot**, **Spring Data JPA**, **MapStruct** e **H2 em memória** para testes.
 
 ---
 
@@ -28,15 +28,31 @@ Inclui:
 ```
 src/main/java
  └── com.osa.desafio
-      ├── agency
-      │    ├── controller        -> Endpoints REST
-      │    ├── service           -> Lógica de negócio
-      │    ├── model             -> Entidades JPA
-      │    └── repository        -> Repositório JPA
+      ├── controller
+      │    └── AgencyController         -> Endpoints REST
       │
-      └── dto
-           ├── request          -> Classes de request
-           └── response         -> Classes de response
+      ├── core
+      │    └── agency
+      │         ├── mapper                  -> Mapeamento de entidades
+      │         ├── model                   -> Entidades JPA
+      │         ├── repository              -> Repositório JPA
+      │         ├── request                 -> Classes de request
+      │         ├── response                -> Classes de response
+      │         └── service                 -> Lógica de negócio
+      │
+      ├── exception
+      │    └── response                -> Tratamento de exceções
+      │
+      ├── infrastructure
+      │    └── swagger
+      │         └── OpenApiConfig            -> Configuração do Swagger/OpenAPI
+      │
+      └── usecase
+           └── agency
+                ├── CreateAgencyUseCase     -> Caso de uso para criação de agência (interface)
+                └── FindAgencyUseCase       -> Caso de uso para busca de agência (interface)
+
+
 ```
 
 ---
@@ -51,6 +67,7 @@ src/main/java
 * JUnit 5 + Mockito
 * MockMvc
 * Swagger/OpenAPI 3
+* Flyway
 
 ---
 
@@ -72,17 +89,17 @@ cd desafio
 3. A aplicação estará disponível em:
 
 ```
-http://localhost:8080
+http://localhost:8080/desafio
 ```
 
 4. Swagger (documentação interativa):
 
 ```
-http://localhost:8080/swagger-ui.html
+http://localhost:8080/desafio/swagger-ui.html
 ```
 
 **Exemplo do Swagger UI:**
-![Swagger UI](docs/swagger-ui.png)
+
 
 ---
 
@@ -186,7 +203,6 @@ CREATE TABLE tbl_agencies (
 ## 🔧 Considerações Técnicas
 
 * MapStruct para mapear DTO ↔ Entity
-* Paginação via `PageRequest`
 * Testes integrados usando H2, sem banco externo
 * Cálculo de distância simplificado (pode ser aprimorado com geolocalização real)
 
@@ -203,4 +219,4 @@ CREATE TABLE tbl_agencies (
     * Boas práticas Spring Boot
 
 **Exemplo de execução no Postman:**
-![Postman Example](docs/postman-example.png)
+

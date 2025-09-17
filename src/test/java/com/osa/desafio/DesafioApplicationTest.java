@@ -3,7 +3,12 @@ package com.osa.desafio;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class DesafioApplicationTests {
+import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
+class DesafioApplicationTest {
+
+    @Test
+    void contextLoads() {
+    }
 }
